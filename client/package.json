@@ -5,10 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "user01": "node index.js  --username JV --room sala001 --hostUri localhost",
+    "user01": "node index.js  --username JV --room sala002 --hostUri http://localhost:9898",
     "user02": "node index.js  --username Mefius --room sala002 --hostUri http://localhost:9898",
-    "user03": "node index.js  --username Rodrigo --room sala003 --hostUri localhost",
-    "user04": "node index.js  --username Lucas --room sala004 --hostUri localhost",
+    "user03": "node index.js  --username Rodrigado --room sala002 --hostUri http://localhost:9898",
+    "user04": "node index.js  --username SuaMae --room sala002 --hostUri http://localhost:9898",
     "test": "echo \"Error: no testcle specified\" && exit 1"
   },
   "keywords": [],

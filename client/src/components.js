@@ -1,16 +1,16 @@
-import blessed from 'blessed'; //instancia do pacote blessed para construção de interfaces na linha de comando
+import blessed from 'blessed'
 
-export default class ComponentsBuilder{
+export default class ComponentsBuilder {
     #screen
     #layout
     #input
     #chat
     #status
     #activityLog
-    constructor(){ }
 
+    constructor() { }
 
-    #baseComponent(){
+    #baseComponent() {
         return {
             border: 'line',
             mouse: true,
@@ -18,35 +18,35 @@ export default class ComponentsBuilder{
             top: 0,
             scrollboar: {
                 ch: ' ',
-                inverser: true
+                inverse: true
             },
-            //habilita colocar cores e tags no texto
-            tags: true   
+            // habilita colocar cores e tags no texto
+            tags: true
         }
     }
 
-
-    setScreem({title}){
-
+    setScreen({ title }) {
         this.#screen = blessed.screen({
-            smartCSR: true, // serve para fazer uns redimencionamentos na tela automatico
+            smartCSR: true,
             title
         })
-        this.#screen.key(['escape','q','C-c'], () => process.exit(0) ) //definindo comando de encerramento do sistema
-        return this;
+
+        this.#screen.key(['escape', 'q', 'C-c'], () => process.exit(0))
+
+        return this
     }
 
-
-    setLayoutComponent(){
-        this.#layout = blessed.layout({
+    setLayoutComponent() {
+        this.#layout = blessed.layout({ 
             parent: this.#screen,
             width: '100%',
             height: '100%',
         })
-        return this;
+
+        return this
     }
 
-    setInputComponent(onEnterPressed){
+    setInputComponent(onEnterPressed) {
         const input = blessed.textarea({
             parent: this.#screen,
             bottom: 0,
@@ -62,63 +62,59 @@ export default class ComponentsBuilder{
             }
         })
 
-        input.key('enter', onEnterPressed);
-        this.#input = input;
+        input.key('enter', onEnterPressed)
+        this.#input = input
 
-        return this;
+        return this
 
     }
 
-    setChatComponent(){
+    setChatComponent() {
         this.#chat = blessed.list({
             ...this.#baseComponent(),
             parent: this.#layout,
-            aling: 'left',
-            width:'50%',
+            align: 'left',
+            width: '50%',
             height: '90%',
-            items: ['{bold}Messenger{/}']
+            items: ['{bold}Messenger{/}' ]
         })
-        return this;
-    }
 
-    setStatusComponent(){
+        return this
+    }
+    setStatusComponent() {
         this.#status = blessed.list({
             ...this.#baseComponent(),
             parent: this.#layout,
             width: '25%',
             height: '90%',
-            items: ['{bold}Users on Room{/}']
+            items: ['{bold}Users on Room{/}' ]
         })
-        return this;
+        return this
     }
 
-    setActivityLogComponent(){
+    setActivityLogComponent() {
         this.#activityLog = blessed.list({
             ...this.#baseComponent(),
             parent: this.#layout,
             width: '25%',
             height: '90%',
             style: {
-                fg : 'yellow'
+                fg: 'yellow'
             },
-            items: ['{bold}Logs of Room{/}']
+            items: ['{bold}Activity Log{/}' ]
         })
-        return this;
+        return this
     }
 
-    
-
-
-    //constroi um objeto a partir de funções ja criadas, nesse caso, o return gera a tela do sistema
-    build(){ 
-        const components = { 
+    build() {
+        const components = {
             screen: this.#screen,
             input: this.#input,
             chat: this.#chat,
             activityLog: this.#activityLog,
             status: this.#status
         }
-        return components;
-    }
 
+        return components
+    }
 }

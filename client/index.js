@@ -1,20 +1,33 @@
 /*
-   "node index.js  --username JV --room sala001 --hostUri localhost"
-
+node index.js \
+    --username erickwendel \
+    --room sala01 \
+    --hostUri localhost
 */
-import TerminalController from "./src/terminalController.js"; //extenção .js é obrigatoria
-import Events from 'events'; //classe nativa do NodeJS para gestão de eventos 
-import CliConfig from "./src/cliConfig.js";
-import SocketClient from "./src/socket.js";
 
 
-const [nodePath, filePath, ...commands] = process.argv;
+import Events from 'events'
+import CliConfig from './src/cliConfig.js';
+import EventManager from './src/eventManager.js';
+import SocketClient from './src/socket.js';
+import TerminalController from "./src/terminalController.js";
 
-const config = CliConfig.parseArguments(commands);
 
-const componentEmiiter = new Events(); //Instancia da classe events (nativo)
+const [nodePath, filePath, ...commands] = process.argv
+const config = CliConfig.parseArguments(commands)
+console.log(config);
+const componentEmitter = new Events()
 const socketClient = new SocketClient(config)
-await socketClient.initialize();
-/*
-const controller = new TerminalController(); //Instanciamento da classe TerminalController (desenvolvido) 
-await controller.initializeTable(componentEmiiter); */
+await socketClient.initialize()
+const eventManager = new EventManager({ componentEmitter, socketClient})
+const events = eventManager.getEvents()
+socketClient.attachEvents(events)
+
+const data = {
+    roomId: config.room,
+    userName: config.username
+}
+eventManager.joinRoomAndWaitForMessages(data)
+
+const controller = new TerminalController()
+await controller.initializeTable(componentEmitter)
